@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Traffic Light</title>
+</head>
+<body>
+
+</body>
+</html>
+
+	<script>
+
+// Parameters of Traffic Light Cycle
+var cycle = {
+	tFaze1: 8, //time of Faze1 (of First Direction)
+	tFaze2: 8, //time of Faze2 (of Second Direction)
+	tRedRed: 3, //time of Faze2 (of Second Direction)
+	tPromtaktStart: 4, //time of Start Yellow Blink
+	tPromtaktYellow: 3, //time if Red-Yellow-Green and Gren-Yellow-Red transition
+	lightRedRed: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "red";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "red";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+	lightRedRedToPhaze1: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "red";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "red";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+	lightYellowStartOn: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+	lightYellowStartOff: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+  	lightFaze1: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "green";
+		document.getElementById('korp_1_red').style.backgroundColor = "red";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+  	lightFaze2: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "red";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "green";
+  	},
+  	lightGreenBlinkFaze1Off: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "red";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+  	lightGreenBlinkFaze2Off: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "red";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+  	lightPromToFaze1: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "red";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	},
+  	lightPromToFaze2: function() {
+		document.getElementById('korp_0_red').style.backgroundColor = "";
+		document.getElementById('korp_0_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_0_green').style.backgroundColor = "";
+		document.getElementById('korp_1_red').style.backgroundColor = "red";
+		document.getElementById('korp_1_yellow').style.backgroundColor = "yellow";
+		document.getElementById('korp_1_green').style.backgroundColor = "";
+  	}
+}
+
+var centerOfWindows = {x: document.documentElement.clientWidth/2, y: document.documentElement.clientHeight/2};
+
+// Size of Traffic Light Box
+var svSize = {width: document.documentElement.clientWidth*0.1, height: document.documentElement.clientWidth*0.3};
+
+// Funtion of Draw Traffic Light Box
+function addDivKorpus(xPos, yPos, id) {
+	var div = document.createElement('div');
+	document.body.appendChild(div);
+	div.id = id;
+	div.style.position = 'absolute';
+	div.style.backgroundColor = '#D1D1D1'
+	div.style.left = xPos + 'px';
+	div.style.top = yPos + 'px';
+	div.style.border = '5px double black';
+	div.style.width = svSize.width + 'px';
+	div.style.height = svSize.height + 'px';
+	addDivLight(xPos + svSize.width * 0.1, yPos + svSize.height * 0.05, id + '_red')
+	addDivLight(xPos + svSize.width * 0.1, yPos + svSize.height * 0.37, id + '_yellow')
+	addDivLight(xPos + svSize.width * 0.1, yPos + svSize.height * 0.69, id + '_green')
+}
+
+// Funtion of Draw Traffic Light Lamp
+function addDivLight(xPos, yPos, id) {
+	var div = document.createElement('div');
+	document.body.appendChild(div);
+	div.id = id;
+	div.style.position = 'absolute';
+	div.style.left = xPos + 'px';
+	div.style.top = yPos  + 'px';
+	div.style.width = div.style.height = svSize.width * 0.8 + 'px'
+	div.style.border = '3px solid black';
+	div.style.borderRadius = '50%';
+}
+
+// Start Cycle
+function startOfCycle() {
+	// begin of cycle by Yellow Blink
+	cycle.lightYellowStartOn();
+	for (var i = 1; i <= cycle.tPromtaktStart*2; i++) {
+		if (i % 2 == 0) {
+			setTimeout(cycle.lightYellowStartOn, i*500);
+		} else {
+			setTimeout(cycle.lightYellowStartOff, i*500);
+		}
+	};
+
+	//Begin by Red Red
+	setTimeout(cycle.lightRedRed, (cycle.tPromtaktStart)*1000);
+
+	//Red-Red-to-Phaze1
+	setTimeout(cycle.lightRedRedToPhaze1, (cycle.tPromtaktStart+cycle.tRedRed)*1000);
+
+	setInterval(mainCycle, (cycle.tFaze1+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow)*1000); //After end first main Cycle, do it on interval eq. main cycle lenght
+	mainCycle(); //first main Cycle
+}
+
+// Main Cycle
+function mainCycle() {
+	//Phaze 1
+	setTimeout(cycle.lightFaze1, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow)*1000);
+
+	// end of Phaze1
+	setTimeout(cycle.lightGreenBlinkFaze1Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-3.5)*1000);
+	setTimeout(cycle.lightFaze1, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-3)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze1Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-2.5)*1000);
+	setTimeout(cycle.lightFaze1, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-2)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze1Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-1.5)*1000);
+	setTimeout(cycle.lightFaze1, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-1)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze1Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1-0.5)*1000);
+
+	//From Phaze1 to Phaze2
+	setTimeout(cycle.lightPromToFaze2, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1)*1000);
+
+	//Phaze2
+	setTimeout(cycle.lightFaze2, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1+cycle.tPromtaktYellow)*1000);
+
+	// end of Phaze2
+	setTimeout(cycle.lightGreenBlinkFaze2Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-3.5)*1000);
+	setTimeout(cycle.lightFaze2, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-3)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze2Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-2.5)*1000);
+	setTimeout(cycle.lightFaze2, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-2)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze2Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-1.5)*1000);
+	setTimeout(cycle.lightFaze2, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-1)*1000);
+	setTimeout(cycle.lightGreenBlinkFaze2Off, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze2+cycle.tPromtaktYellow+cycle.tFaze2-0.5)*1000);
+
+	//From Phaze2 to Phaze1
+	setTimeout(cycle.lightPromToFaze1, (cycle.tPromtaktStart+cycle.tRedRed+cycle.tPromtaktYellow+cycle.tFaze1+cycle.tPromtaktYellow+cycle.tFaze2)*1000);
+}
+
+var korp = [];
+var light = [];
+
+korp[0]={posX: centerOfWindows.x - (svSize.width*1.2), posY: centerOfWindows.y - (svSize.height/2)};
+korp[1]={posX: centerOfWindows.x + (svSize.width*1.2), posY: centerOfWindows.y - (svSize.height/2)};
+
+for (var i = 0; i < korp.length; i++) {
+	addDivKorpus(korp[i].posX, korp[i].posY, 'korp_'+i);
+};
+
+startOfCycle();
+
+
+	</script>
